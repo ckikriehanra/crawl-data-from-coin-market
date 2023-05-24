@@ -1,6 +1,5 @@
 # Custom
 logs/
-minio_storage/
 spark/resources/
 document.txt
 
