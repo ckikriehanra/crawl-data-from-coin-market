@@ -32,10 +32,9 @@ if __name__ == "__main__":
     
     now = datetime.datetime.now() + datetime.timedelta(hours=7)
     curr_date = now.date()
-    prev_date = curr_date
-    # prev_date = curr_date- datetime.timedelta(days=1)
     # prev_date = curr_date
-
+    prev_date = curr_date- datetime.timedelta(days=1)
+    
     newest_records_day = df.filter(col("time").cast("date") == prev_date) \
             .withColumn("day", lit(prev_date)) \
             .select("symbol_key", "day", "price", "volume_24h") \
