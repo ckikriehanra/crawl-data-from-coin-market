@@ -34,11 +34,11 @@ if __name__ == "__main__":
     
     curr_hour = now.hour
     curr_date = now.date()
-    prev_hour = curr_hour
-    # prev_hour = curr_hour-1
-    # if prev_hour < 0:
-    #     prev_hour += 24
-    #     curr_date = curr_date - datetime.timedelta(days=1)
+#     prev_hour = curr_hour
+    prev_hour = curr_hour-1
+    if prev_hour < 0:
+        prev_hour += 24
+        curr_date = curr_date - datetime.timedelta(days=1)
 
     newest_records_hour_day = df.filter((hour(col("time")) == prev_hour) & (col("time").cast("date") == curr_date)) \
         .withColumn("hour", lit(prev_hour)) \
