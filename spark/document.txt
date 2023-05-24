@@ -1,2 +1,0 @@
-download hadoop-aws-3.3.1.jar, aws-java-sdk-bundle-1.11.972.jar and store in $SPARK_HOME/jars/
-
