@@ -46,12 +46,12 @@ if __name__ == "__main__":
         .format("parquet")\
         .mode("append")\
         .save("s3a://{}/{}".format(bucket_name, fact_price_day_path))
-    except:
-        try:
-            newest_records_day.write\
-                .format("parquet")\
-                .mode("overwrite")\
-                .save("s3a://{}/{}".format("cken-coins-data", "gold/fact/fact_day_price"))
-        except FileNotFoundError:
-            pass
-    
+    except FileNotFoundError:
+        newest_records_day.write\
+            .format("parquet")\
+            .mode("overwrite")\
+            .save("s3a://{}/{}".format(bucket_name, fact_price_day_path))
+
+    spark.stop()
+
+        
