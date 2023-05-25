@@ -62,17 +62,14 @@ if __name__ == "__main__":
         StructField("symbol_key", IntegerType(), False),
         StructField("symbol", StringType(), True),
         StructField("name", StringType(), True)
-    ])
+    ]) 
 
 
+        
     df_parquet = spark.read \
         .format("parquet") \
         .schema(schema) \
         .load("s3a://{}/{}".format(bucket_name, file_name_in_parquet))
-    
-    # df_parquet.show()
-    
-    # print("no_rows: {}".format(df_parquet.count()))
     
     df_dim_date = spark.read \
         .format("parquet") \
@@ -91,30 +88,23 @@ if __name__ == "__main__":
             .load("s3a://{}/{}".format(bucket_name, dim_symbol_path))
     except:
         pass
-        
-    # df_exist.show()
-    # df_parquet.show()
-    # df_temp.show()
     
     # Update dim_symbol
     df_result = df_exist.union(df_temp).distinct()
-    # df_result.show()
     
     # Load data into fact table
     df_fact = (df_result.join(df_parquet, (df_parquet.symbol==df_result.symbol) & (df_parquet.name==df_result.name), how="inner")) \
         .join(df_dim_date, to_date(col("time"))==df_dim_date.TheDate, how="inner") \
         .select ("symbol_key", "Date_key", "time", "price", "1h%", "24h%", "7d%", "market_cap", "volume_24h", "circulating_supply")
 
-    # print("no_rows2: {}".format(df_fact.count()))
-
     # Update data in gold layer
     # Update fact_hour_exchange_rate
-    try:
+    try :
         df_fact.write \
             .format("parquet") \
             .mode("append") \
             .save("s3a://{}/{}".format(bucket_name, fact_minute_price))
-    except:
+    except FileNotFoundError:
         df_fact.write \
         .format("parquet") \
         .mode("overwrite") \
@@ -126,7 +116,6 @@ if __name__ == "__main__":
         .mode("overwrite") \
         .save("s3a://{}/{}".format(bucket_name, dim_symbol_path))
     
-    # df_fact.printSchema()
     
     # Stop the SparkSession
     spark.stop()
