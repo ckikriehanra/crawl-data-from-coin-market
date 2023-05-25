@@ -22,8 +22,7 @@ SECRET_KEY = config.secretKey
 ENDPOINT = config.endpoint
 
 
-# with DAG("crawl_dag", start_date=datetime(2023,1,1), schedule_interval="@hourly", catchup=False) as dag:
-with DAG("crawl_data", start_date=datetime(2023,1,1), schedule_interval="@once", catchup=False) as dag:
+with DAG("crawl_dag", start_date=datetime(2023,1,1), schedule_interval="*/5 * * * *", catchup=False) as dag:
     crawl_data = PythonOperator(
         task_id="crawl_data",
         python_callable=_crawl_data
