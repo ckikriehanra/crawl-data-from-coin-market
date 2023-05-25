@@ -1,5 +1,13 @@
 import os
 
+# Start page
+start_page = 1
+
+# End page
+end_page  = 2 # maximum of end page is 101
+
+
+
 # Folder in minio
 BRONZE_LAYER_PATH = "bronze/coin_market/minute_crawled_data/"
 SILVER_LAYER_PATH = "silver/delta_table/"
