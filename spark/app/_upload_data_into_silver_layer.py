@@ -54,7 +54,7 @@ if __name__ == "__main__":
             .mode("append") \
             .option("spark.sql.parquet.writeLegacyFormat", "true") \
             .save("s3a://{}/{}".format(bucket_name, file_silver_layer_path))
-    except:
+    except FileNotFoundError:
         df_csv.write \
             .format("parquet") \
             .mode("overwrite") \
