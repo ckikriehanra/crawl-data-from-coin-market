@@ -30,7 +30,14 @@ dimSymbolFile = config.dimSymbolFile
 tempFile = config.tempFile
 tempFileParquet = config.tempFileParquet
 
+start_page = config.start_page
+end_page = config.end_page
+
 def _crawl_data(ti):
+    if end_page <= start_page:
+        print("Need end page greater than start page.")
+        return
+
     now = datetime.datetime.now() + datetime.timedelta(hours=7)
     timestr = now.strftime("%Y%m%d-%H%M%S")
     timestr2 = now.strftime("%Y:%m:%d-%H:%M:%S")
@@ -48,7 +55,7 @@ def _crawl_data(ti):
     with open(RAW_PATH+FILE_NAME, 'w', encoding='utf8', newline='') as csvfile:
         csvwriter = csv.writer(csvfile) 
         # csvwriter.writerow(['time', 'symbol', 'name','price', '1h%', '24h%', '7d%', "market_cap", 'volume_24h', 'circulating_supply'])
-        for page_number in range(7, 8):
+        for page_number in range(start_page, end_page):
             driver.get("https://coinmarketcap.com/?page={}".format(page_number))
             base = 807
             delay = 0.5
