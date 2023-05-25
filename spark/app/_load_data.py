@@ -49,17 +49,10 @@ if __name__ == "__main__":
         .schema(schema) \
         .csv("/usr/local/spark/resources/data/dim_date.csv")
 
-    try:
-        df_csv.write \
-            .format("parquet") \
-            .mode("overwrite") \
-            .save("s3a://{}/gold/dim/dim_date".format(bucket_name))
-    except:
-        df_csv.write \
-            .format("parquet") \
-            .mode("overwrite") \
-            .save("s3a://{}/gold/dim/dim_date".format(bucket_name))
-
+    df_csv.write \
+        .format("parquet") \
+        .mode("overwrite") \
+        .save("s3a://{}/gold/dim/dim_date".format(bucket_name))
     # df_parquet = spark.read \
     #     .format("parquet") \
     #     .load("s3a://cken-coins-data/gold/dim/dim_date")
