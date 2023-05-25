@@ -34,7 +34,7 @@ if __name__ == "__main__":
     curr_date = now.date()
     # prev_date = curr_date
     prev_date = curr_date- datetime.timedelta(days=1)
-    
+
     newest_records_day = df.filter(col("time").cast("date") == prev_date) \
             .withColumn("day", lit(prev_date)) \
             .select("symbol_key", "day", "price", "volume_24h") \
@@ -47,8 +47,11 @@ if __name__ == "__main__":
         .mode("append")\
         .save("s3a://{}/{}".format(bucket_name, fact_price_day_path))
     except:
-        newest_records_day.write\
-            .format("parquet")\
-            .mode("overwrite")\
-            .save("s3a://{}/{}".format("cken-coins-data", "gold/fact/fact_day_price"))
+        try:
+            newest_records_day.write\
+                .format("parquet")\
+                .mode("overwrite")\
+                .save("s3a://{}/{}".format("cken-coins-data", "gold/fact/fact_day_price"))
+        except FileNotFoundError:
+            pass
     
