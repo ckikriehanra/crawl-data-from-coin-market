@@ -34,7 +34,7 @@ if __name__ == "__main__":
     
     curr_hour = now.hour
     curr_date = now.date()
-#     prev_hour = curr_hour
+    # prev_hour = curr_hour
     prev_hour = curr_hour-1
     if prev_hour < 0:
         prev_hour += 24
@@ -55,9 +55,12 @@ if __name__ == "__main__":
             .mode("append")\
             .save("s3a://{}/{}".format("cken-coins-data", "gold/fact/fact_hour_price"))
     except:
-        newest_records_hour_day.write\
-            .format("parquet")\
-            .mode("overwrite")\
-            .save("s3a://{}/{}".format("cken-coins-data", "gold/fact/fact_hour_price"))
+        try:
+            newest_records_hour_day.write\
+                .format("parquet")\
+                .mode("overwrite")\
+                .save("s3a://{}/{}".format("cken-coins-data", "gold/fact/fact_hour_price"))
+        except FileNotFoundError:
+            pass
     
     
